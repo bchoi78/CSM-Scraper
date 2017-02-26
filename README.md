@@ -21,3 +21,6 @@ Run `coffee main.coffee` for a help message.
 
 In general, the usage will follow the form `coffee main.coffee <utility_name> <arg1> <arg2> ...` with arguments as appropriate. 
 The help message will offer a list of supported utilities and their expected arguments. 
+
+The scripts typically will output things to a CSV of the user's choice. This is since we do most of our workflow via Google Docs 
+and CSV's can be uploaded to Google Sheets very easily
