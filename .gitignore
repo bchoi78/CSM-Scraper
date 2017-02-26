@@ -1,0 +1,5 @@
+# Ignore nodemodules
+node_modules/*
+
+# Ignore settings
+settings.yaml
