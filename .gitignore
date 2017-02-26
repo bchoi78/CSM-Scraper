@@ -3,3 +3,7 @@ node_modules/*
 
 # Ignore settings
 settings.yaml
+
+# Ignore CSV's
+*.csv
+output/
