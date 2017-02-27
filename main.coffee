@@ -19,9 +19,6 @@ get_sections [csv_dir]                          Writes all section information t
 
 args = process.argv[2..]
 if args.length
-    try
-        utilities[args[0]].apply(this, args[1..])
-    catch exc
-        print_help()
+    utilities[args[0]].apply(this, args[1..])
 else
     print_help()

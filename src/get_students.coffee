@@ -2,30 +2,37 @@
 Promise = require('bluebird')
 request = Promise.promisifyAll(require('request'))
 cheerio = require('cheerio')
-fs = require('fs')
+fs = Promise.promisifyAll(require('fs'))
 common = require('./common.coffee')
 
 get_students = (cookie_jar) ->
+    get_digit = common.get_digit
     params = {
         url: common.SETTINGS.url + '/admin/manage_attendance'
         jar: cookie_jar
     }
     return request.getAsync(params).then (resp) ->
+        seen = {}
         students = []
         $ = cheerio.load(resp.body)
-        $('div.roster li.list-group-item').each (index) ->
-            info = $(this).text().trim().split('\n')
-            info = (s.trim() for s in info).filter (s) -> s != ''
-            get_digit = common.get_digit
+        $('tr.mentor-list').each (index) ->
+            tr = $(this)
+            section = get_digit(tr.find('div.panel-body h4 a').first().text())
+            if section and not seen.hasOwnProperty(section)
+                tr.find('div.roster li.list-group-item').each (index) ->
+                    info = $(this).text().trim().split('\n')
+                    info = (s.trim() for s in info).filter (s) -> s != ''
 
-            students.push {
-                name: info[0]
-                email: info[1]
-                approved: get_digit(info[2])
-                excused: get_digit(info[3])
-                pending: get_digit(info[4])
-                unexcused: info[6]
-            }
+                    students.push {
+                        name: info[0]
+                        email: info[1]
+                        section: section
+                        approved: get_digit(info[2])
+                        excused: get_digit(info[3])
+                        pending: get_digit(info[4])
+                        unexcused: info[6]
+                    }
+                seen[section] = 0
         return students
 
 module.exports = {

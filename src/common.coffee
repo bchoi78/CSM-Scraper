@@ -55,6 +55,8 @@ json_to_csv = (filename, columns, data) ->
 get_digit = (s, all) ->
     reg = /\d+/g
     matches = s.match(reg)
+    if not matches
+        return null
     if all
         return matches
     return matches[0]
